@@ -1,0 +1,4 @@
+# Office 関連の編集中の作業ファイルは無視
+~$*
+# Mac の meta情報は無視
+.DS_Store
