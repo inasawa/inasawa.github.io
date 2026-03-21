@@ -1,16 +1,16 @@
 {
-  "name" : "N 個展なび",
-  "short_name": "S 個展なび",
-  "start_url" : "/",
+  "name" : "WebPush N",
+  "short_name": "WebPush S",
+  "start_url" : "/webpush",
   "display": "standalone",
   "icons": [
     {
-      "src":   "/sites/M42_192.png",
+      "src":   "M42_192.png",
       "sizes": "192x192",
       "type":  "image/png"
     },
     {
-      "src":   "/sites/M42_512.png",
+      "src":   "M42_512.png",
       "sizes": "512x512",
       "type":  "image/png"
     }
