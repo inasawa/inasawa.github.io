@@ -33,8 +33,10 @@
         object-fit: cover; /* 画像の比率を保ちトリミング */
       }
       .description {
+        display: grid;
         margin-bottom: 20px;
-        text-align: center;
+        justify-content: center;
+        /* text-align: center;*/
       }
       .caption {
         height: 40px;
@@ -117,6 +119,11 @@
       <span>M91</span><span>M92</span><span><a href="#M93">M93</a></span><span>M94</span><span><a href="#M95">M95</a></span><span><a href="#M96">M96</a></span><span>M97</span><span><a href="#M98">M98</a></span><span><a href="#M99">M99</a></span><span><a href="#M100">M100</a></span>
       <span>M101</span><span>M102</span><span>M103</span><span><a href="#M104">M104</a></span><span><a href="#M105">M105</a></span><span>M106</span><span><a href="#M107">M107</a></span><span>M108</span><span>M109</span><span><a href="#M31">M110</a></span>
     </div>
-    <div class="description">※ サムネイルの画像は DWARF mini で撮影した画像を縮小し、横幅だけ詰めたもの。各画像をクリックすると、元の画像が参照できます。</div>
+    <div class="description">
+      <div>※ サムネイルの画像は DWARF mini で撮影した画像を縮小し、横幅だけ詰めたもの。</div>
+      <div>※ 各画像をクリックすると、元画像が参照できます。</div>
+      <div>※ 元画像は DWARF mini の天文スタジオで自動補正しただけのもの。</div>
+      <div>※ ほとんどの画像はデフォルトのパラメータで約120枚（30分）撮影。（条件が悪く、途中で中断したものもいくつか）</div>
+    </div>
   </body>
 </html>
