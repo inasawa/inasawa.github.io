@@ -11,6 +11,17 @@
       h1 {
         text-align: center;
       }
+      header {
+        display: grid;
+        margin-bottom: 20px;
+        justify-content: center;
+        text-align: center;
+      }
+      footer {
+        display: grid;
+        margin-bottom: 20px;
+        justify-content: center;
+      }
       .link-list {
         display: flex;
         flex-wrap: wrap; /* 折り返し */
@@ -33,12 +44,6 @@
         height: 300px; /* サムネイルの高さ */
         object-fit: cover; /* 画像の比率を保ちトリミング */
       }
-      .description {
-        display: grid;
-        margin-bottom: 20px;
-        justify-content: center;
-        /* text-align: center;*/
-      }
       .caption {
         height: 40px;
         text-align: center;
@@ -47,7 +52,7 @@
   </head>
   <body>
     <h1>メシエ天体</h1>
-    <div class="description">メシエ天体を DWARF mini で撮影<br/>東京都内の明るい空で挑戦中<br/>現在 44画像、52天体</div>
+    <header>メシエ天体を DWARF mini で撮影<br/>東京都内の明るい空で挑戦中<br/>現在 44画像、52天体</header>
     <div class="link-list">
       <span><a href="#M1">M1</a></span><span>M2</span><span>M3</span><span><a href="#M4">M4</a></span><span><a href="#M5">M5</a></span><span>M6</span><span>M7</span><span>M8</span><span>M9</span><span><a href="#M10">M10</a></span>
       <span>M11</span><span><a href="#M12">M12</a></span><span>M13</span><span>M14</span><span>M15</span><span>M16</span><span>M17</span><span>M18</span><span>M19</span><span>M20</span>
@@ -120,11 +125,11 @@
       <span>M91</span><span>M92</span><span><a href="#M93">M93</a></span><span>M94</span><span><a href="#M95">M95</a></span><span><a href="#M96">M96</a></span><span>M97</span><span><a href="#M98">M98</a></span><span><a href="#M99">M99</a></span><span><a href="#M100">M100</a></span>
       <span>M101</span><span>M102</span><span>M103</span><span><a href="#M104">M104</a></span><span><a href="#M105">M105</a></span><span>M106</span><span><a href="#M107">M107</a></span><span>M108</span><span>M109</span><span><a href="#M31">M110</a></span>
     </div>
-    <div class="description">
+    <footer>
       <div>※ サムネイルの画像は DWARF mini で撮影した画像を縮小し、横幅だけ詰めたもの。</div>
       <div>※ 各画像をクリックすると、元画像が参照できます。</div>
       <div>※ 元画像は DWARF mini の天文スタジオで自動補正しただけのもの。</div>
       <div>※ ほとんどの画像はデフォルトのパラメータで約120枚（30分）撮影。（条件が悪く、途中で中断したものもいくつか）</div>
-    </div>
+    </footer>
   </body>
 </html>
