@@ -1,0 +1,47 @@
+body {
+  font-family: system-ui,"Hiragino Sans","Meiryo",sans-serif;
+}
+h1 {
+  text-align: center;
+}
+header {
+  display: grid;
+  margin-bottom: 20px;
+  justify-content: center;
+  text-align: center;
+}
+footer {
+  display: grid;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+.link-list {
+  display: flex;
+  flex-wrap: wrap; /* 折り返し */
+  gap: 5px; /* 画像間の隙間 */
+  justify-content: center;
+  width: 80%;
+  margin: 20px auto;
+}
+.link-list span {
+  width: 40px; /* サムネイルの幅 */
+}
+.image-list {
+  display: flex;
+  flex-wrap: wrap; /* 折り返し */
+  gap: 20px; /* 画像間の隙間 */
+  justify-content: center;
+}
+.image-list img {
+  width:  400px; /* サムネイルの幅 */
+  height: 300px; /* サムネイルの高さ */
+  object-fit: cover; /* 画像の比率を保ちトリミング */
+}
+.caption {
+  height: 75px;
+  text-align: center;
+}
+.image {
+  display: grid;
+  justify-content: center;
+}
