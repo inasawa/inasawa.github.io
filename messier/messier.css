@@ -42,6 +42,16 @@ footer {
   text-align: center;
 }
 .image {
-  display: grid;
+  display: flex;
   justify-content: center;
+}
+.main {
+  margin: 10px 10px;
+}
+.home {
+  display: block;
+  margin: auto;
+}
+.arrow {
+  margin: auto 10px;
 }
