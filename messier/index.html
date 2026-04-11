@@ -84,7 +84,7 @@
         //console.log(images);
         return (
           <>
-            <header>メシエ天体を DWARF mini で撮影<br/>東京都内の明るい空で挑戦中<br/>現在 {props.image_count}画像、{props.count}天体</header>
+            <header>メシエ天体を DWARF mini で撮影<br/>東京都内の明るい空で挑戦中<br/>現在 {props.image_count} 画像、{props.count} 天体</header>
             <div className="link-list">
               {links}
             </div>
@@ -119,7 +119,7 @@
             <Link to={'/messier/'}><img className="home" src="/messier/thumbnails/btn-home.png" alt="Home" /></Link>
             <div className="image">
               <Link className="arrow" to={'/messier/images/' + props.list[m.prev].I} state={{config: props.list[m.prev]}} ><img src="/messier/thumbnails/btn-prev.png" alt="Prev" /></Link>
-              <img className="main" src={location.pathname} title={'M'+m.M} alt={'M'+m.M} />
+              <img className="full-image" src={location.pathname} title={'M'+m.M} alt={'M'+m.M} />
               <Link className="arrow" to={'/messier/images/'  + props.list[m.next].I} state={{config: props.list[m.next]}} ><img src="/messier/thumbnails/btn-next.png" alt="Next" /></Link>
             </div>
             <div className="caption">{m.D} {m.T} {m.S}s G{m.G} {m.E} {m.F}<br/><span dangerouslySetInnerHTML={{__html: m.C1.join('<br/>')}} /><br/>{m.C2}</div>

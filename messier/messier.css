@@ -45,13 +45,15 @@ footer {
   display: flex;
   justify-content: center;
 }
-.main {
-  margin: 10px 10px;
+.full-image {
+  max-width: 90%; /* 親要素の幅を超えない */
+  height: auto;    /* 縦横比を維持 */
+  margin: 10px 5px;
 }
 .home {
   display: block;
   margin: auto;
 }
 .arrow {
-  margin: auto 10px;
+  margin: auto 5px;
 }
