@@ -108,12 +108,9 @@
         const location = useLocation();
         const { image } = useParams();
         const m = location.state.config;
-        console.log('Image props', props);
-        console.log('Image location', location);
-        console.log('Image image', image);
-        //<div class="caption">{m.D} {m.T} {m.S}s G{m.G} {m.E} {m.F}<br/><span dangerouslySetInnerHTML={{__html: m.C1.join('<br/>')}} /><br/>{m.C2}</div>
-        //<img src={location.pathname} title={'M'+m.M} alt={'M'+m.M} />
-        //<img className="main" src={'/messier/images/'+m.I} title={'M'+m.M} alt={'M'+m.M} />
+        //console.log('Image props', props);
+        //console.log('Image location', location);
+        //console.log('Image image', image);
         return (
           <div>
             <Link to={'/messier/'}><img className="home" src="/messier/thumbnails/btn-home.png" alt="Home" /></Link>
