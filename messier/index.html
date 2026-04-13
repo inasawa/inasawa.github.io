@@ -121,7 +121,7 @@
         //console.log('Image image', image);
         return (
           <div>
-            <Link to={'/messier/'}><img className="home" src="/messier/thumbnails/btn-home.png" alt="Home" /></Link>
+            <Link to={'/messier/'}><img className="goto-home" src="/messier/thumbnails/btn-home.png" alt="Home" /></Link>
             <div className="image">
               <Link className="arrow" to={'/messier/images/' + props.list[m.prev].I} ><img src="/messier/thumbnails/btn-prev.png" alt="Prev" /></Link>
               <img className="full-image" src={location.pathname} title={'M'+m.M} alt={'M'+m.M} onClick={()=>{navigate('/messier/images/' + props.list[m.next].I)}}/>

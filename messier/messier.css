@@ -50,10 +50,11 @@ footer {
   height: auto;    /* 縦横比を維持 */
   margin: 10px 5px;
 }
-.home {
+.goto-home {
   display: block;
   margin: auto;
 }
 .arrow {
-  margin: auto 5px;
+  display: flex;
+  align-items: center;
 }
