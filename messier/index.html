@@ -46,7 +46,7 @@
           <BrowserRouter>
             <Routes>
               <Route path="/messier/" element={<TopPage list={messier.list} image_count={messier.image_count} count={messier.count} />} />
-              <Route path="/messier/images/:image" element={<Image list={messier.list} />} />
+              <Route path="/messier/images/:id" element={<Image list={messier.list} />} />
             </Routes>
           </BrowserRouter>
         );
@@ -77,14 +77,14 @@
             //console.log(m.I);
             if (m.I) {
               if (!m.N || m.M == m.N) {
-                return (<div id={'M'+m.M}><Link to={'/messier/images/'+m.I} ><img src={'thumbnails/M'+m.M+'.webp'} title={'M'+m.M} alt={'M'+m.M}/></Link><div className="caption">{m.D} {m.T} {m.S}s G{m.G} {m.E} {m.F}<br/><span dangerouslySetInnerHTML={{__html: m.C1.join('<br/>')}} /><br/>{m.C2}</div></div>);
+                return (<div id={'M'+m.M}><Link to={'/messier/images/M'+m.M} ><img src={'thumbnails/M'+m.M+'.webp'} title={'M'+m.M} alt={'M'+m.M}/></Link><div className="caption">{m.D} {m.T} {m.S}s G{m.G} {m.E} {m.F}<br/><span dangerouslySetInnerHTML={{__html: m.C1.join('<br/>')}} /><br/>{m.C2}</div></div>);
               }
             }
           });
         //console.log(images);
         return (
           <>
-            <header>メシエ天体を DWARF mini で撮影<br/>東京都内の明るい空で挑戦中<br/>現在 {props.image_count} 画像、{props.count} 天体</header>
+            <header>メシエ天体を DWARF mini で撮影<br/>東京都内の明るい空（ボートル・スケール 9）で挑戦中<br/>現在 {props.image_count} 画像、{props.count} 天体</header>
             <div className="link-list">
               {links}
             </div>
@@ -107,9 +107,10 @@
       function Image(props) {
         //const location = useLocation();
         const navigate = useNavigate();
-        const { image } = useParams();
+        const { id } = useParams();
+        const [annotation, setAnnotation ] = useState(false);
         //const m = location.state.config;
-        const match = image.match(/^M(\d+)_/);
+        const match = id.match(/^M(\d+)$/);
         //console.log('Image match', match);
         if (!match) {
           return;
@@ -119,13 +120,18 @@
         //console.log('Image props', props);
         //console.log('Image location', location);
         //console.log('Image image', image);
+
+        function toggle_annotation() {
+          setAnnotation(annotation => !annotation);
+        }
+        
         return (
           <div>
             <Link to={'/messier/'}><img className="goto-home" src="/messier/thumbnails/btn-home.png" alt="Home" /></Link>
             <div className="image">
-              <Link className="arrow" to={'/messier/images/' + props.list[m.prev].I} ><img src="/messier/thumbnails/btn-prev.png" alt="Prev" /></Link>
-              <img className="full-image" src={location.pathname} title={'M'+m.M} alt={'M'+m.M} onClick={()=>{navigate('/messier/images/' + props.list[m.next].I)}}/>
-              <Link className="arrow" to={'/messier/images/' + props.list[m.next].I} ><img src="/messier/thumbnails/btn-next.png" alt="Next" /></Link>
+              <Link className="arrow" to={'/messier/images/M' + (m.prev + 1)} ><img src="/messier/thumbnails/btn-prev.png" alt="Prev" /></Link>
+              <img className="full-image" src={'/messier/images/' + (annotation ? m.I.substring(0, m.I.length-6) + '0A.jpg' : m.I)} title={'M'+m.M} alt={'M'+m.M} onClick={toggle_annotation} />
+              <Link className="arrow" to={'/messier/images/M' + (m.next + 1)} ><img src="/messier/thumbnails/btn-next.png" alt="Next" /></Link>
             </div>
             <div className="caption">{m.D} {m.T} {m.S}s G{m.G} {m.E} {m.F}<br/><span dangerouslySetInnerHTML={{__html: m.C1.join('<br/>')}} /><br/>{m.C2}</div>
           </div>
