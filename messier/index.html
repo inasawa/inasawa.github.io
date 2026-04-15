@@ -78,10 +78,7 @@
             //console.log(m.I);
             if (m.I) {
               if (!m.N || m.M == m.N) {
-                if (match && m.M == match[1]) {
-                  return (<div id={'M'+m.M} className="selected" ><Link to={'/messier/images/M'+m.M} ><img src={'thumbnails/M'+m.M+'.webp'} title={'M'+m.M} alt={'M'+m.M}/></Link><div className="caption">{m.D} {m.T} {m.S}s G{m.G} {m.E} {m.F}<br/><span dangerouslySetInnerHTML={{__html: m.C1.join('<br/>')}} /><br/>{m.C2}</div></div>);
-                }
-                return (<div id={'M'+m.M}><Link to={'/messier/images/M'+m.M} ><img src={'thumbnails/M'+m.M+'.webp'} title={'M'+m.M} alt={'M'+m.M}/></Link><div className="caption">{m.D} {m.T} {m.S}s G{m.G} {m.E} {m.F}<br/><span dangerouslySetInnerHTML={{__html: m.C1.join('<br/>')}} /><br/>{m.C2}</div></div>);
+                return (<div id={'M'+m.M} className={match && m.M == match[1] ? "selected" : null} ><Link to={'/messier/images/M'+m.M} ><img src={'thumbnails/M'+m.M+'.webp'} title={'M'+m.M} alt={'M'+m.M}/></Link><div className="caption">{m.D} {m.T} {m.S}s G{m.G} {m.E} {m.F}<br/><span dangerouslySetInnerHTML={{__html: m.C1.join('<br/>')}} /><br/>{m.C2}</div></div>);
               }
             }
           });
