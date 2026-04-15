@@ -29,13 +29,19 @@ footer {
 .image-list {
   display: flex;
   flex-wrap: wrap; /* 折り返し */
-  gap: 20px; /* 画像間の隙間 */
+  gap: 10px; /* 画像間の隙間 */
   justify-content: center;
 }
 .image-list img {
   width:  400px; /* サムネイルの幅 */
   height: 300px; /* サムネイルの高さ */
   object-fit: cover; /* 画像の比率を保ちトリミング */
+}
+.image-list div {
+  padding: 10px;
+}
+.selected {
+  background-color: #FFCCFF;
 }
 .caption {
   height: 75px;
