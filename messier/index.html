@@ -131,7 +131,7 @@
             <Link to={'/messier/'}><img className="goto-home" src="/messier/thumbnails/btn-home.png" alt="Home" /></Link>
             <div className="image">
               <Link className="arrow" to={'/messier/images/M' + (m.prev + 1)} ><img src="/messier/thumbnails/btn-prev.png" alt="Prev" /></Link>
-              <img className="full-image" src={'/messier/images/' + (annotation ? m.I.substring(0, m.I.length-6) + '0A.jpg' : m.I)} title={'M'+m.M} alt={'M'+m.M} onClick={toggle_annotation} />
+              <img className="full-image" src={'/messier/images/' + (annotation ? m.I.substring(0, m.I.length-7) + '0A.webp' : m.I)} title={'M'+m.M} alt={'M'+m.M} onClick={toggle_annotation} />
               <Link className="arrow" to={'/messier/images/M' + (m.next + 1)} ><img src="/messier/thumbnails/btn-next.png" alt="Next" /></Link>
             </div>
             <div className="caption">{m.D} {m.T} {m.S}s G{m.G} {m.E} {m.F}<br/><span dangerouslySetInnerHTML={{__html: m.C1.join('<br/>')}} /><br/>{m.C2}</div>
