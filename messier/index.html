@@ -128,13 +128,17 @@
         
         return (
           <div>
-            <Link to={'/messier/'}><img className="goto-home" src="/messier/thumbnails/btn-home.png" alt="Home" /></Link>
-            <div className="image">
-              <Link className="arrow" to={'/messier/images/M' + (m.prev + 1)} ><img src="/messier/thumbnails/btn-prev.png" alt="Prev" /></Link>
-              <img className="full-image" src={'/messier/images/' + (annotation ? m.I.substring(0, m.I.length-7) + '0A.webp' : m.I)} title={'M'+m.M} alt={'M'+m.M} onClick={toggle_annotation} />
-              <Link className="arrow" to={'/messier/images/M' + (m.next + 1)} ><img src="/messier/thumbnails/btn-next.png" alt="Next" /></Link>
+            <div style={{"display": "flex", "justify-content": "space-evenly", "align-items": "center"}} >
+              <div style={{width: "30%"}}></div>
+              <Link to={'/messier/'}><img src="/messier/thumbnails/btn-home.png" alt="Home" /></Link>
+              <div style={{width: "30%"}}><button style={{padding: "5px 15px"}} onClick={toggle_annotation}>Annotation {annotation ? "Off" : "On"}</button></div>
             </div>
-            <div className="caption">{m.D} {m.T} {m.S}s G{m.G} {m.E} {m.F}<br/><span dangerouslySetInnerHTML={{__html: m.C1.join('<br/>')}} /><br/>{m.C2}</div>
+            <div style={{"display": "flex", "justify-content": "center"}} >
+              <Link style={{"display": "flex", "align-items": "center"}} to={'/messier/images/M' + (m.prev + 1)} ><img src="/messier/thumbnails/btn-prev.png" alt="Prev" /></Link>
+              <img style={{"max-width": "90%", "height": "auto", "margin": "10px 5px"}} src={'/messier/images/' + (annotation ? m.I.substring(0, m.I.length-7) + '0A.webp' : m.I)} title={'M'+m.M} alt={'M'+m.M} onClick={toggle_annotation} />
+              <Link style={{"display": "flex", "align-items": "center"}} to={'/messier/images/M' + (m.next + 1)} ><img src="/messier/thumbnails/btn-next.png" alt="Next" /></Link>
+            </div>
+            <div style={{"text-align": "center"}}>{m.D} {m.T} {m.S}s G{m.G} {m.E} {m.F}<br/><span dangerouslySetInnerHTML={{__html: m.C1.join('<br/>')}} /><br/>{m.C2}</div>
           </div>
         );
       }
