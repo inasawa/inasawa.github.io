@@ -6,7 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:image" content="https://inasawa.github.io/messier/thumbnails/M42.webp">
     <link rel="stylesheet" href="messier.css">
-    <!-- react-router@7.14.2 => Uncaught TypeError: can't access property "useRef", i.H is null -->
+    <!-- 2026-04-22
+         https://esm.sh/stable/react@19.2.5(2026-03-18)
+         https://esm.sh/stable/react@19.2.5/jsx-runtime
+         https://esm.sh/stable/react-dom@19.2.5/client
+         https://esm.sh/stable/react-router@7.14.1(2026-04-13) react-router@7.14.2(2026-04-21) => Uncaught TypeError: can't access property "useRef", i.H is null
+    -->
     <script type="importmap">
       {
         "imports": {
@@ -54,9 +59,9 @@
       }
 
       function TopPage(props) {
+        //console.log('TopPage props', props);
         const location = useLocation();
-        //console.log('App props', props);
-        //console.log('App location', location);
+        //console.log('TopPage location', location);
         const links = 
           props.list.map(function(m) {
             //console.log(m.I);
@@ -79,14 +84,25 @@
             //console.log(m.I);
             if (m.I) {
               if (!m.N || m.M == m.N) {
-                return (<div id={'M'+m.M} className={match && m.M == match[1] ? "selected" : null} ><Link to={'/messier/images/M'+m.M} ><img src={'thumbnails/M'+m.M+'.webp'} title={'M'+m.M} alt={'M'+m.M}/></Link><div className="caption">{m.D} {m.T} {m.S}s G{m.G} {m.E} {m.F}<br/><span dangerouslySetInnerHTML={{__html: m.C1.join('<br/>')}} /><br/>{m.C2}</div></div>);
+                return (
+                  <div id={'M'+m.M} className={match && m.M == match[1] ? "selected" : null} >
+                    <Link to={'/messier/images/M'+m.M} >
+                      <img src={'thumbnails/M'+m.M+'.webp'} title={'M'+m.M} alt={'M'+m.M}/>
+                    </Link>
+                    <div className="caption">{m.D} {m.T} {m.S}s G{m.G} {m.E} {m.F}<br/><span dangerouslySetInnerHTML={{__html: m.C1.join('<br/>')}} /><br/>{m.C2}</div>
+                  </div>
+                );
               }
             }
           });
         //console.log(images);
         return (
           <>
-            <header>メシエ天体を DWARF mini で撮影<br/>東京都内の明るい空（ボートル・スケール 9）で挑戦中<br/>現在 {props.image_count} 画像、{props.count} 天体</header>
+            <header>
+              <div>メシエ天体を DWARF mini で撮影</div>
+              <div>東京都内の明るい空（ボートル・スケール 9）で挑戦中</div>
+              <div>現在 {props.image_count} 画像、{props.count} 天体</div>
+            </header>
             <div className="link-list">
               {links}
             </div>
@@ -107,11 +123,10 @@
       }
 
       function Image(props) {
-        //const location = useLocation();
+        //console.log('Image props', props);
         const navigate = useNavigate();
         const { id } = useParams();
         const [annotation, setAnnotation ] = useState(false);
-        //const m = location.state.config;
         const match = id.match(/^M(\d+)$/);
         //console.log('Image match', match);
         if (!match) {
@@ -119,9 +134,6 @@
         }
         const m = props.list[match[1]-1];
         //console.log('Image config', m);
-        //console.log('Image props', props);
-        //console.log('Image location', location);
-        //console.log('Image image', image);
 
         function toggle_annotation() {
           setAnnotation(annotation => !annotation);
@@ -136,7 +148,7 @@
             </div>
             <div style={{"display": "flex", "justify-content": "center"}} >
               <Link style={{"display": "flex", "align-items": "center"}} to={'/messier/images/M' + (m.prev + 1)} ><img src="/messier/thumbnails/btn-prev.png" alt="Prev" /></Link>
-              <img style={{"max-width": "90%", "height": "auto", "margin": "10px 5px"}} src={'/messier/images/' + (annotation ? m.I.substring(0, m.I.length-7) + '0A.webp' : m.I)} title={'M'+m.M} alt={'M'+m.M} onClick={toggle_annotation} />
+              <img style={{"max-width": "90%", "height": "auto", "margin": "10px 5px"}} src={'/messier/images/' + (annotation ? m.I.substring(0, m.I.length-6) + 'A.webp' : m.I)} title={'M'+m.M} alt={'M'+m.M} onClick={toggle_annotation} />
               <Link style={{"display": "flex", "align-items": "center"}} to={'/messier/images/M' + (m.next + 1)} ><img src="/messier/thumbnails/btn-next.png" alt="Next" /></Link>
             </div>
             <div style={{"text-align": "center"}}>{m.D} {m.T} {m.S}s G{m.G} {m.E} {m.F}<br/><span dangerouslySetInnerHTML={{__html: m.C1.join('<br/>')}} /><br/>{m.C2}</div>
