@@ -28,7 +28,7 @@
     <h1>メシエ天体</h1>
     <div id="root"></div>
     <script type="text/babel">
-      import { useState, useEffect } from "react";
+      import { useState, useEffect, useRef } from "react";
       import { createRoot } from "react-dom/client";
       import { BrowserRouter, Routes, Route, Link, useParams, useNavigate, useLocation } from "react-router";
       createRoot(document.getElementById("root")).render(<App/>);
@@ -129,6 +129,10 @@
         const navigate = useNavigate();
         const { id } = useParams();
         const [annotation, setAnnotation ] = useState(false);
+        const homeRef = useRef();
+        const prevRef = useRef();
+        const nextRef = useRef();
+        const annoRef = useRef();
         const match = id.match(/^M(\d+)$/);
         //console.log('Image match', match);
         if (!match) {
@@ -137,21 +141,45 @@
         const m = props.list[match[1]-1];
         //console.log('Image config', m);
 
+        useEffect(() => {
+          const handleKeyDown = (event) => {
+            //console.log('Key pressed:', '<' + event.key + '>');
+            switch (event.key) {
+              case 'ArrowUp':
+                homeRef.current.click();
+                break;
+              case 'ArrowLeft':
+                prevRef.current.click();
+                break;
+              case 'ArrowRight':
+                nextRef.current.click();
+                break;
+              case ' ':
+                annoRef.current.click();
+                break;
+            }
+          };
+          window.addEventListener('keydown', handleKeyDown);
+          return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+          };
+        }, []);
+
         function toggle_annotation() {
           setAnnotation(annotation => !annotation);
         }
-        
+
         return (
           <div>
             <div style={{"display": "flex", "justify-content": "space-evenly", "align-items": "center"}} >
               <div style={{width: "30%"}}></div>
-              <Link to={'/messier/'}><img src="/messier/thumbnails/btn-home.png" alt="Home" /></Link>
-              <div style={{width: "30%"}}><button style={{padding: "5px 15px"}} onClick={toggle_annotation}>Annotation {annotation ? "Off" : "On"}</button></div>
+              <Link ref={homeRef} to={'/messier/'}><img src="/messier/thumbnails/btn-home.png" alt="Home" /></Link>
+              <div style={{width: "30%"}}><button ref={annoRef} style={{padding: "5px 15px"}} onClick={toggle_annotation}>Annotation {annotation ? "Off" : "On"}</button></div>
             </div>
             <div style={{"display": "flex", "justify-content": "center"}} >
-              <Link style={{"display": "flex", "align-items": "center"}} to={'/messier/images/M' + (m.prev + 1)} ><img src="/messier/thumbnails/btn-prev.png" alt="Prev" /></Link>
+              <Link ref={prevRef} style={{"display": "flex", "align-items": "center"}} to={'/messier/images/M' + (m.prev + 1)} ><img src="/messier/thumbnails/btn-prev.png" alt="Prev" /></Link>
               <img style={{"max-width": "90%", "height": "auto", "margin": "10px 5px"}} src={'/messier/images/' + (annotation ? m.I.substring(0, m.I.length-6) + 'A.webp' : m.I)} title={'M'+m.M} alt={'M'+m.M} onClick={toggle_annotation} />
-              <Link style={{"display": "flex", "align-items": "center"}} to={'/messier/images/M' + (m.next + 1)} ><img src="/messier/thumbnails/btn-next.png" alt="Next" /></Link>
+              <Link ref={nextRef} style={{"display": "flex", "align-items": "center"}} to={'/messier/images/M' + (m.next + 1)} ><img src="/messier/thumbnails/btn-next.png" alt="Next" /></Link>
             </div>
             <div style={{"text-align": "center"}} ><ImageCaption m={m} /></div>
           </div>
