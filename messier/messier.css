@@ -17,50 +17,28 @@ footer {
 }
 .link-list {
   display: flex;
-  flex-wrap: wrap; /* 折り返し */
-  gap: 5px; /* 画像間の隙間 */
+  flex-wrap: wrap;
+  gap: 5px;
   justify-content: center;
   width: 80%;
   margin: 20px auto;
 }
 .link-list span {
-  width: 40px; /* サムネイルの幅 */
+  width: 40px;
 }
-.image-list {
+.thumbnail-list {
   display: flex;
-  flex-wrap: wrap; /* 折り返し */
-  gap: 10px; /* 画像間の隙間 */
+  flex-wrap: wrap;
   justify-content: center;
 }
-.image-list img {
-  width:  400px; /* サムネイルの幅 */
-  height: 300px; /* サムネイルの高さ */
+.thumbnail-img {
+  width:  350px; /* サムネイルの幅 */
+  height: 260px; /* サムネイルの高さ */
   object-fit: cover; /* 画像の比率を保ちトリミング */
 }
-.image-list div {
+.thumbnail-box {
   padding: 10px;
 }
 .selected {
   background-color: #7fffd4;
-}
-.caption {
-  height: 75px;
-  text-align: center;
-}
-.image {
-  display: flex;
-  justify-content: center;
-}
-.full-image {
-  max-width: 90%; /* 親要素の幅を超えない */
-  height: auto;    /* 縦横比を維持 */
-  margin: 10px 5px;
-}
-.goto-home {
-  display: block;
-  margin: auto;
-}
-.arrow {
-  display: flex;
-  align-items: center;
 }

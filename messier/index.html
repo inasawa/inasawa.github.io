@@ -84,12 +84,13 @@
             //console.log(m.I);
             if (m.I) {
               if (!m.N || m.M == m.N) {
+                //console.log('thumbnails map', m);
                 return (
-                  <div id={'M'+m.M} className={match && m.M == match[1] ? "selected" : null} >
+                  <div id={'M'+m.M} className={"thumbnail-box " + (match && m.M == match[1] ? "selected" : "")} >
                     <Link to={'/messier/images/M'+m.M} >
-                      <img src={'thumbnails/M'+m.M+'.webp'} title={'M'+m.M} alt={'M'+m.M}/>
+                      <img className="thumbnail-img" src={'thumbnails/M'+m.M+'.webp'} title={'M'+m.M} alt={'M'+m.M}/>
                     </Link>
-                    <div className="caption">{m.D} {m.T} {m.S}s G{m.G} {m.E} {m.F}<br/><span dangerouslySetInnerHTML={{__html: m.C1.join('<br/>')}} /><br/>{m.C2}</div>
+                    <div style={{"text-align": "center", "height": "100px"}} ><ImageCaption m={m} /></div>
                   </div>
                 );
               }
@@ -106,7 +107,7 @@
             <div className="link-list">
               {links}
             </div>
-            <div className="image-list">
+            <div className="thumbnail-list">
               {thumbnails}
             </div>
             <div className="link-list">
@@ -124,7 +125,7 @@
       }
 
       function Image(props) {
-        //console.log('Image props', props);
+        console.log('Image props', props);
         const navigate = useNavigate();
         const { id } = useParams();
         const [annotation, setAnnotation ] = useState(false);
@@ -152,9 +153,23 @@
               <img style={{"max-width": "90%", "height": "auto", "margin": "10px 5px"}} src={'/messier/images/' + (annotation ? m.I.substring(0, m.I.length-6) + 'A.webp' : m.I)} title={'M'+m.M} alt={'M'+m.M} onClick={toggle_annotation} />
               <Link style={{"display": "flex", "align-items": "center"}} to={'/messier/images/M' + (m.next + 1)} ><img src="/messier/thumbnails/btn-next.png" alt="Next" /></Link>
             </div>
-            <div style={{"text-align": "center"}}>{m.D} {m.T} {m.S}s G{m.G} {m.E} {m.F}<br/><span dangerouslySetInnerHTML={{__html: m.C1.join('<br/>')}} /><br/>{m.C2}</div>
+            <div style={{"text-align": "center"}} ><ImageCaption m={m} /></div>
           </div>
         );
+      }
+
+      function ImageCaption(props) {
+        //console.log('ImageCaption props', props);
+        const m = props.m;
+        return (
+          <>
+            <div>{m.D} {m.T} {m.S}s G{m.G} {m.E} {m.F}</div>
+            {m.C1.map(function(c) {
+              return (<div>{c}</div>);
+            })}
+            {m.C2 && <div>{m.C2}</div>}
+          </>
+        )
       }
     </script>
   </body>
