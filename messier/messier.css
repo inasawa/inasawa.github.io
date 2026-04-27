@@ -32,8 +32,8 @@ footer {
   justify-content: center;
 }
 .thumbnail-img {
-  width:  350px; /* サムネイルの幅 */
-  height: 260px; /* サムネイルの高さ */
+  width:  320px; /* サムネイルの幅 */
+  height: 240px; /* サムネイルの高さ */
   object-fit: cover; /* 画像の比率を保ちトリミング */
 }
 .thumbnail-box {

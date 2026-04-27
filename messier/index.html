@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="ja" dir="ltr">
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
-    <title>メシエ天体</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:image" content="https://inasawa.github.io/messier/thumbnails/M42.webp">
-    <link rel="stylesheet" href="messier.css">
+    <title>DWARF mini でメシエ天体</title>
+    <meta property="og:title" content="DWARF mini でメシエ天体" />
+    <meta property="og:image" content="https://inasawa.github.io/messier/thumbnails/M42.webp" />
+    <meta property="og:type" content="website" />
+    <link rel="stylesheet" href="messier.css" />
     <!-- 2026-04-22
          https://esm.sh/stable/react@19.2.5(2026-03-18)
          https://esm.sh/stable/react@19.2.5/jsx-runtime
@@ -25,7 +27,7 @@
     <script type="module" src="https://esm.sh/tsx"></script>
   </head>
   <body>
-    <h1 id="top">メシエ天体</h1>
+    <h1 id="top">DWARF mini でメシエ天体</h1>
     <div id="root"></div>
     <script type="text/babel">
       import { useState, useEffect, useRef } from "react";
@@ -66,7 +68,7 @@
         const links = 
           props.list.map(function(m) {
             //console.log(m.I);
-            if (m.I) {
+            if (m.I || m.N) {
               if (!m.N || m.M == m.N) {
                 return (<span><Link to={'#M'+m.M}>M{m.M}</Link></span>);
               }
@@ -104,7 +106,7 @@
           if (location.hash) {
             const element = document.querySelector(location.hash)
             if (element) {
-              element.scrollIntoView({block: "nearest"} );
+              element.scrollIntoView({behavior: "smooth", block: "center"} );
             }
           }
         }, [location.hash])
@@ -236,7 +238,7 @@
         const m = props.m;
         return (
           <>
-            <div>{m.D} {m.T} {m.S}s G{m.G} {m.E} {m.F}</div>
+            <div style={{"font-size":"90%"}}>{m.D} {m.T} {m.S}s G{m.G} {m.E} {m.F}</div>
             {m.C1.map(function(c) {
               return (<div>{c}</div>);
             })}
