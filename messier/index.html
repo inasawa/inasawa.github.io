@@ -39,7 +39,7 @@
         const [ messier, setMessier ] = useState();
         useEffect(() => {
           //console.log('App useEffect');
-          fetch('/messier/messier.json', {method: 'GET'})
+          fetch('/messier/messier.json?'+(new Date()).toISOString().substring(0,10), {method: 'GET'})
           .then(res => res.json())
           .then(data => {
             //console.log('App useEffect data', data);
