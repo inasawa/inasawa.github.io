@@ -117,6 +117,10 @@
             const match = document.baseURI.match(/^.*\/#M(\d+)$/);
             //console.log('Key pressed:', '<' + event.key + '>', match ? match[1] : 'not match');
             switch (event.key) {
+              case 'Escape':
+                document.getElementById('top').scrollIntoView();
+                navigate('/messier/');
+                break;
               case 'ArrowUp':
                 document.getElementById('top').scrollIntoView();
                 break;
@@ -194,6 +198,9 @@
           const handleKeyDown = (event) => {
             //console.log('Key pressed:', '<' + event.key + '>');
             switch (event.key) {
+              case 'Escape':
+                navigate('/messier/');
+                break;
               case 'ArrowUp':
                 homeRef.current.click();
                 break;
