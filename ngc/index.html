@@ -3,11 +3,11 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
-    <title>DWARF mini でメシエ天体</title>
-    <meta property="og:title" content="DWARF mini でメシエ天体" />
-    <meta property="og:image" content="https://inasawa.github.io/messier/thumbnails/M42.webp" />
+    <title>DWARF mini でＮＧＣ天体</title>
+    <meta property="og:title" content="DWARF mini でＮＧＣ天体" />
+    <meta property="og:image" content="https://inasawa.github.io/ngc/thumbnails/NGC2024.webp" />
     <meta property="og:type" content="website" />
-    <link rel="stylesheet" href="/messier/messier.css" />
+    <link rel="stylesheet" href="/ngc/ngc.css" />
     <!-- 2026-04-22
          https://esm.sh/stable/react@19.2.5(2026-03-18) react@19.2.6(2026-06-06) => Uncaught TypeError: can't access property "useRef", i.H is null
          https://esm.sh/stable/react@19.2.5/jsx-runtime
@@ -27,7 +27,7 @@
     <script type="module" src="https://esm.sh/tsx"></script>
   </head>
   <body>
-    <h1 id="top">DWARF mini でメシエ天体</h1>
+    <h1 id="top">DWARF mini でＮＧＣ天体</h1>
     <div id="root"></div>
     <script type="text/babel">
       import { useState, useEffect, useRef } from "react";
@@ -39,7 +39,7 @@
         const [ messier, setMessier ] = useState();
         useEffect(() => {
           //console.log('App useEffect');
-          fetch('/messier/messier.json?'+(new Date()).toISOString().substring(0,10), {method: 'GET'})
+          fetch('/ngc/ngc.json?'+(new Date()).toISOString().substring(0,10), {method: 'GET'})
           .then(res => res.json())
           .then(data => {
             //console.log('App useEffect data', data);
@@ -53,9 +53,8 @@
         return (
           <BrowserRouter>
             <Routes>
-              <Route index element={<Navigate to="/messier/" />} />
-              <Route path="/messier/" element={<TopPage list={messier.list} image_count={messier.image_count} count={messier.count} />} />
-              <Route path="/messier/images/:id" element={<Image list={messier.list} />} />
+              <Route path="/ngc/" element={<TopPage list={messier.list} image_count={messier.image_count} count={messier.count} />} />
+              <Route path="/ngc/images/:id" element={<Image list={messier.list} />} />
             </Routes>
           </BrowserRouter>
         );
@@ -81,7 +80,7 @@
               return (<span key={m.M}>{m.M}</span>);
             }
           });
-        const match = location.hash.match(/^#(M\d+)$/);
+        const match = location.hash.match(/^#(NGC\d+)$/);
         //console.log('TopPage location', location.pathname, location.hash, match);
         const thumbnails = 
           props.list.map(function(m) {
@@ -91,8 +90,8 @@
                 //console.log('thumbnails map', m);
                 return (
                   <div key={m.M} id={m.M} className={"thumbnail-box " + (match && m.M == match[1] ? "selected" : "")} >
-                    <Link to={'/messier/images/'+m.M} >
-                      <img className="thumbnail-img" src={'/messier/thumbnails/'+m.M+'.webp'} title={m.M} alt={m.M} loading="lazy" />
+                    <Link to={'/ngc/images/'+m.M} >
+                      <img className="thumbnail-img" src={'/ngc/thumbnails/'+m.M+'.webp'} title={m.M} alt={m.M} loading="lazy" />
                     </Link>
                     <div style={{"text-align": "center", "height": "100px"}} ><ImageCaption m={m} /></div>
                   </div>
@@ -115,12 +114,13 @@
         useEffect(() => {
           const handleKeyDown = (event) => {
             //console.log('handleKeyDown document.baseURI', document.baseURI);
-            const match = document.baseURI.match(/^.*\/#M(\d+)$/);
+            const match = document.baseURI.match(/^.*\/#(NGC\d+)$/);
+            const m = props.list.find((m) => m.M == match[1]);
             //console.log('Key pressed:', '<' + event.key + '>', match ? match[1] : 'not match');
             switch (event.key) {
               case 'Escape':
                 document.getElementById('top').scrollIntoView();
-                navigate('/messier/');
+                navigate('/ngc/');
                 break;
               case 'ArrowUp':
                 document.getElementById('top').scrollIntoView();
@@ -129,16 +129,16 @@
                 document.getElementById('bottom').scrollIntoView();
                 break;
               case 'ArrowLeft':
-                navigate('#' + (match ? props.list[props.list[match[1]-1].prev].M : props.list[0].M))
+                navigate('#' + (match ? props.list[m.prev].M : props.list[0].M))
                 break;
               case 'ArrowRight':
-                navigate('#' + (match ? props.list[props.list[match[1]-1].next].M : props.list[0].M))
+                navigate('#' + (match ? props.list[m.next].M : props.list[0].M))
                 break;
               case 'Enter':
                 event.preventDefault();
                 if (match) {
                   //console.log('handleKeyDown Enter', 'navigate /messier/images/M' + match[1]);
-                  navigate('/messier/images/M' + match[1]);
+                  navigate('/ngc/images/NGC' + match[1]);
                 }
                 break;
             }
@@ -152,7 +152,7 @@
         return (
           <>
             <header>
-              <div>メシエ天体を DWARF mini で撮影</div>
+              <div>ＮＧＣ天体を DWARF mini で撮影</div>
               <div>東京都内の明るい空（ボートル・スケール 9）で挑戦中</div>
               <div>現在 {props.image_count} 画像、{props.count} 天体</div>
             </header>
@@ -170,7 +170,6 @@
               <div>※ 各画像をクリックすると、元画像が参照できます</div>
               <div>※ 元画像は DWARF mini の天文スタジオで自動補正を適用したもの</div>
               <div>※ １行目の表示は、撮影日時、シャッター速度、ゲイン、露出時間(シャッター速度xスタック数)、フィルター</div>
-              <div>※ 天体に関する情報は Wikipedia <a href="https://ja.wikipedia.org/wiki/%E3%83%A1%E3%82%B7%E3%82%A8%E5%A4%A9%E4%BD%93%E3%81%AE%E4%B8%80%E8%A6%A7">メシエ天体の一覧</a> より取得</div>
               <div>※ 画像へのアノテーションは <a href="https://github.com/nordcomputer/astro-annotator">Astro Annotator</a> を使用</div>
               <div>※ 一部 Astro Annotator ではアノテーションできなかった画像については Siril でアノテーションしたものを使用</div>
             </footer>
@@ -187,12 +186,12 @@
         const prevRef = useRef();
         const nextRef = useRef();
         const annoRef = useRef();
-        const match = id.match(/^M(\d+)$/);
+        const match = id.match(/^(NGC\d+)$/);
         //console.log('Image match', match);
         if (!match) {
           return;
         }
-        const m = props.list[match[1]-1];
+        const m = props.list.find((m) => m.M == match[1]);
         //console.log('Image config', m);
 
         useEffect(() => {
@@ -200,7 +199,7 @@
             //console.log('Key pressed:', '<' + event.key + '>');
             switch (event.key) {
               case 'Escape':
-                navigate('/messier/');
+                navigate('/ngc/');
                 break;
               case 'ArrowUp':
                 homeRef.current.click();
@@ -231,13 +230,13 @@
           <div>
             <div style={{"display": "flex", "justify-content": "space-evenly", "align-items": "center"}} >
               <div style={{width: "30%"}}></div>
-              <Link ref={homeRef} to={'/messier/#' + m.M}><img src="/common/btn-home.png" alt="Home" /></Link>
+              <Link ref={homeRef} to={'/ngc/#' + m.M}><img src="/common/btn-home.png" alt="Home" /></Link>
               <div style={{width: "30%"}}><button ref={annoRef} style={{padding: "5px 15px"}} onClick={toggle_annotation}>Annotation {annotation ? "Off" : "On"}</button></div>
             </div>
             <div style={{"display": "flex", "justify-content": "center"}} >
-              <Link ref={prevRef} style={{"display": "flex", "align-items": "center"}} to={'/messier/images/' + props.list[m.prev].M} ><img src="/common/btn-prev.png" alt="Prev" /></Link>
-              <img style={{"max-width": "90%", "height": "auto", "margin": "10px 5px"}} src={'/messier/images/' + (annotation ? m.I.substring(0, m.I.length-6) + 'A.webp' : m.I)} title={m.M} alt={m.M} onClick={toggle_annotation} />
-              <Link ref={nextRef} style={{"display": "flex", "align-items": "center"}} to={'/messier/images/' + props.list[m.next].M} ><img src="/common/btn-next.png" alt="Next" /></Link>
+              <Link ref={prevRef} style={{"display": "flex", "align-items": "center"}} to={'/ngc/images/' + props.list[m.prev].M} ><img src="/common/btn-prev.png" alt="Prev" /></Link>
+              <img style={{"max-width": "90%", "height": "auto", "margin": "10px 5px"}} src={'/ngc/images/' + (annotation ? m.I.substring(0, m.I.length-6) + 'A.webp' : m.I)} title={m.M} alt={m.M} onClick={toggle_annotation} />
+              <Link ref={nextRef} style={{"display": "flex", "align-items": "center"}} to={'/ngc/images/' + props.list[m.next].M} ><img src="/common/btn-next.png" alt="Next" /></Link>
             </div>
             <div style={{"text-align": "center"}} ><ImageCaption m={m} /></div>
           </div>
