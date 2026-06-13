@@ -23,7 +23,10 @@ footer {
   width: 80%;
   margin: 20px auto;
 }
-.link-list span {
+.link-list-messier {
+  width: 40px;
+}
+.link-list-ngc {
   width: 80px;
 }
 .thumbnail-list {

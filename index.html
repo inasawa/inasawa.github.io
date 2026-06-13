@@ -3,11 +3,11 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
-    <title>DWARF mini でメシエ天体</title>
-    <meta property="og:title" content="DWARF mini でメシエ天体" />
+    <title>DWARF mini で天体撮影</title>
+    <meta property="og:title" content="DWARF mini で天体撮影" />
     <meta property="og:image" content="https://inasawa.github.io/messier/thumbnails/M42.webp" />
     <meta property="og:type" content="website" />
-    <link rel="stylesheet" href="/messier/messier.css" />
+    <link rel="stylesheet" href="/common.css" />
     <!-- 2026-04-22
          https://esm.sh/stable/react@19.2.5(2026-03-18) react@19.2.6(2026-06-06) => Uncaught TypeError: can't access property "useRef", i.H is null
          https://esm.sh/stable/react@19.2.5/jsx-runtime
@@ -27,7 +27,7 @@
     <script type="module" src="https://esm.sh/tsx"></script>
   </head>
   <body>
-    <h1 id="top">DWARF mini でメシエ天体</h1>
+    <h1 id="top">DWARF mini で天体撮影</h1>
     <div id="root"></div>
     <script type="text/babel">
       import { useState, useEffect, useRef } from "react";
@@ -36,28 +36,38 @@
       createRoot(document.getElementById("root")).render(<App/>);
 
       function App() {
-        const [ messier, setMessier ] = useState();
-        useEffect(() => {
-          //console.log('App useEffect');
-          fetch('/messier/messier.json?'+(new Date()).toISOString().substring(0,10), {method: 'GET'})
-          .then(res => res.json())
-          .then(data => {
-            //console.log('App useEffect data', data);
-            setMessier(data)
-          })
-        }, []);
-        if (!messier) {
-          //console.log('App waiting messier.json');
-          return;
-        }
         return (
           <BrowserRouter>
             <Routes>
               <Route index element={<Navigate to="/messier/" />} />
-              <Route path="/messier/" element={<TopPage list={messier.list} image_count={messier.image_count} count={messier.count} />} />
-              <Route path="/messier/images/:id" element={<Image list={messier.list} />} />
+              <Route path="/messier/*" element={<GetData data_path="/messier/messier.json" />} />
+              <Route path="/ngc/*"     element={<GetData data_path="/ngc/ngc.json" />} />
             </Routes>
           </BrowserRouter>
+        );
+      }
+
+      function GetData(props) {
+        const [ data, setData ] = useState();
+        //console.log('MessierTopPage', data);
+        useEffect(() => {
+          //console.log('App useEffect');
+          fetch(props.data_path+'?'+(new Date()).toISOString().substring(0,13), {method: 'GET'})
+          .then(res => res.json())
+          .then(data => {
+            //console.log('App useEffect data', data);
+            setData(data)
+          })
+        }, [props.data_path]);
+        if (!data) {
+          //console.log('App waiting messier.json');
+          return;
+        }
+        return (
+            <Routes>
+              <Route path="/" element={<TopPage data={data} />} />
+              <Route path="/images/:id" element={<Image data={data} />} />
+            </Routes>
         );
       }
 
@@ -67,32 +77,32 @@
         const navigate = useNavigate();
         //console.log('TopPage location', location);
         const links = 
-          props.list.map(function(m) {
+          props.data.list.map(function(m) {
             //console.log(m.I);
             if (m.I || m.N) {
               if (!m.N || m.M == m.N) {
-                return (<span key={m.M}><Link to={'#'+m.M}>{m.M}</Link></span>);
+                return (<span className={"link-list-"+props.data.catalog} key={m.M}><Link to={'#'+m.M}>{m.M}</Link></span>);
               }
               else {
-                return (<span key={m.M}><Link to={'#'+m.N}>{m.M}</Link></span>);
+                return (<span className={"link-list-"+props.data.catalog} key={m.M}><Link to={'#'+m.N}>{m.M}</Link></span>);
               }
             }
             else {
-              return (<span key={m.M}>{m.M}</span>);
+              return (<span className={"link-list-"+props.data.catalog} key={m.M}>{m.M}</span>);
             }
           });
-        const match = location.hash.match(/^#(M\d+)$/);
+        const match = location.hash.match(/^#((M|NGC)(\d+))$/);
         //console.log('TopPage location', location.pathname, location.hash, match);
         const thumbnails = 
-          props.list.map(function(m) {
+          props.data.list.map(function(m) {
             //console.log(m.I);
             if (m.I) {
               if (!m.N || m.M == m.N) {
                 //console.log('thumbnails map', m);
                 return (
                   <div key={m.M} id={m.M} className={"thumbnail-box " + (match && m.M == match[1] ? "selected" : "")} >
-                    <Link to={'/messier/images/'+m.M} >
-                      <img className="thumbnail-img" src={'/messier/thumbnails/'+m.M+'.webp'} title={m.M} alt={m.M} loading="lazy" />
+                    <Link to={'/' + props.data.catalog + '/images/'+m.M} >
+                      <img className="thumbnail-img" src={'/' + props.data.catalog + '/thumbnails/'+m.M+'.webp'} title={m.M} alt={m.M} loading="lazy" />
                     </Link>
                     <div style={{"text-align": "center", "height": "100px"}} ><ImageCaption m={m} /></div>
                   </div>
@@ -113,14 +123,17 @@
         }, [location.hash])
 
         useEffect(() => {
+          //console.log('TopPage useEffect props.data.catalog', props.data.catalog);
           const handleKeyDown = (event) => {
             //console.log('handleKeyDown document.baseURI', document.baseURI);
-            const match = document.baseURI.match(/^.*\/#M(\d+)$/);
-            //console.log('Key pressed:', '<' + event.key + '>', match ? match[1] : 'not match');
+            //console.log('TopPage useEffect match 1', match);
+            const match = document.baseURI.match(/^.*\/#((M|NGC)(\d+))$/);
+            //console.log('Key pressed:', '<' + event.key + '>', match ? match[3] : 'not match');
+            const m = match ? (props.data.catalog == 'ngc' ? props.data.list.find((m) => m.M == match[1]) : props.data.list[match[3]-1]) : props.data.list[0]
             switch (event.key) {
               case 'Escape':
                 document.getElementById('top').scrollIntoView();
-                navigate('/messier/');
+                navigate('/' + props.data.catalog + '/');
                 break;
               case 'ArrowUp':
                 document.getElementById('top').scrollIntoView();
@@ -129,16 +142,16 @@
                 document.getElementById('bottom').scrollIntoView();
                 break;
               case 'ArrowLeft':
-                navigate('#' + (match ? props.list[props.list[match[1]-1].prev].M : props.list[0].M))
+                navigate('#' + (match ? props.data.list[m.prev].M : m.M))
                 break;
               case 'ArrowRight':
-                navigate('#' + (match ? props.list[props.list[match[1]-1].next].M : props.list[0].M))
+                navigate('#' + (match ? props.data.list[m.next].M : m.M))
                 break;
               case 'Enter':
                 event.preventDefault();
                 if (match) {
                   //console.log('handleKeyDown Enter', 'navigate /messier/images/M' + match[1]);
-                  navigate('/messier/images/M' + match[1]);
+                  navigate('/' + props.data.catalog + '/images/' + match[1]);
                 }
                 break;
             }
@@ -147,14 +160,15 @@
           return () => {
             window.removeEventListener('keydown', handleKeyDown);
           };
-        }, []);
+        }, [props.data.catalog]);
 
         return (
           <>
             <header>
-              <div>メシエ天体を DWARF mini で撮影</div>
+              <div>{props.data.catalog == 'messier' ? 'メシエ天体' : 'メシエ天体以外'}を DWARF mini で撮影</div>
               <div>東京都内の明るい空（ボートル・スケール 9）で挑戦中</div>
-              <div>現在 {props.image_count} 画像、{props.count} 天体</div>
+              <div>現在 {props.data.image_count} 画像、{props.data.count} 天体</div>
+              <div>（{props.data.catalog == 'messier' ? <Link to="/ngc/">メシエ天体以外の撮影画像はこちら</Link> : <Link to="/messier/">メシエ天体の撮影画像はこちら</Link>}）</div>
             </header>
             <div className="link-list">
               {links}
@@ -179,7 +193,7 @@
       }
 
       function Image(props) {
-        console.log('Image props', props);
+        //console.log('Image props', props);
         const navigate = useNavigate();
         const { id } = useParams();
         const [annotation, setAnnotation ] = useState(false);
@@ -187,12 +201,12 @@
         const prevRef = useRef();
         const nextRef = useRef();
         const annoRef = useRef();
-        const match = id.match(/^M(\d+)$/);
+        const match = id.match(/^(M|NGC)(\d+)$/);
         //console.log('Image match', match);
         if (!match) {
           return;
         }
-        const m = props.list[match[1]-1];
+        const m = props.data.catalog == 'ngc' ? props.data.list.find((m) => m.M == match[0]) : props.data.list[match[2]-1];
         //console.log('Image config', m);
 
         useEffect(() => {
@@ -200,7 +214,7 @@
             //console.log('Key pressed:', '<' + event.key + '>');
             switch (event.key) {
               case 'Escape':
-                navigate('/messier/');
+                navigate('/' + props.data.catalog + '/');
                 break;
               case 'ArrowUp':
                 homeRef.current.click();
@@ -231,13 +245,13 @@
           <div>
             <div style={{"display": "flex", "justify-content": "space-evenly", "align-items": "center"}} >
               <div style={{width: "30%"}}></div>
-              <Link ref={homeRef} to={'/messier/#' + m.M}><img src="/common/btn-home.png" alt="Home" /></Link>
+              <Link ref={homeRef} to={'/'+props.data.catalog+'/#' + m.M}><img src="/common/btn-home.png" alt="Home" /></Link>
               <div style={{width: "30%"}}><button ref={annoRef} style={{padding: "5px 15px"}} onClick={toggle_annotation}>Annotation {annotation ? "Off" : "On"}</button></div>
             </div>
             <div style={{"display": "flex", "justify-content": "center"}} >
-              <Link ref={prevRef} style={{"display": "flex", "align-items": "center"}} to={'/messier/images/' + props.list[m.prev].M} ><img src="/common/btn-prev.png" alt="Prev" /></Link>
-              <img style={{"max-width": "90%", "height": "auto", "margin": "10px 5px"}} src={'/messier/images/' + (annotation ? m.I.substring(0, m.I.length-6) + 'A.webp' : m.I)} title={m.M} alt={m.M} onClick={toggle_annotation} />
-              <Link ref={nextRef} style={{"display": "flex", "align-items": "center"}} to={'/messier/images/' + props.list[m.next].M} ><img src="/common/btn-next.png" alt="Next" /></Link>
+              <Link ref={prevRef} style={{"display": "flex", "align-items": "center"}} to={'/'+props.data.catalog+'/images/' + props.data.list[m.prev].M} ><img src="/common/btn-prev.png" alt="Prev" /></Link>
+              <img style={{"max-width": "90%", "height": "auto", "margin": "10px 5px"}} src={'/'+props.data.catalog+'/images/' + (annotation ? m.I.substring(0, m.I.length-6) + 'A.webp' : m.I)} title={m.M} alt={m.M} onClick={toggle_annotation} />
+              <Link ref={nextRef} style={{"display": "flex", "align-items": "center"}} to={'/'+props.data.catalog+'/images/' + props.data.list[m.next].M} ><img src="/common/btn-next.png" alt="Next" /></Link>
             </div>
             <div style={{"text-align": "center"}} ><ImageCaption m={m} /></div>
           </div>
