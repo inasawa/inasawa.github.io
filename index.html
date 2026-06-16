@@ -165,10 +165,19 @@
         return (
           <>
             <header>
-              <div>{props.data.catalog == 'messier' ? 'メシエ天体' : 'メシエ天体以外'}を DWARF mini で撮影</div>
-              <div>東京都内の明るい空（ボートル・スケール 9）で挑戦中</div>
-              <div>現在 {props.data.image_count} 画像、{props.data.count} 天体</div>
-              <div>（{props.data.catalog == 'messier' ? <Link to="/ngc/">メシエ天体以外の撮影画像はこちら</Link> : <Link to="/messier/">メシエ天体の撮影画像はこちら</Link>}）</div>
+              {props.data.catalog == 'messier' ? 
+                <>
+                  <div>DWARF mini で撮影したメシエ天体一覧</div>
+                  <div>東京都内の明るい空（ボートル・スケール 9）でも</div>
+                  <div>全 {props.data.count} 天体（{props.data.image_count} 画像）を撮影できました</div>
+                  <div><Link to="/ngc/">メシエ天体以外の撮影画像はこちら</Link></div>
+                </>
+                :
+                <>
+                  <div>DWARF mini で撮影したメシエ天体以外の一覧</div>
+                  <div>東京都内の明るい空（ボートル・スケール 9）で挑戦中</div>
+                  <div><Link to="/messier/">メシエ天体の撮影画像はこちら</Link></div>
+                </>}
             </header>
             <div className="link-list">
               {links}
@@ -184,7 +193,9 @@
               <div>※ 各画像をクリックすると、元画像が参照できます</div>
               <div>※ 元画像は DWARF mini の天文スタジオで自動補正を適用したもの</div>
               <div>※ １行目の表示は、撮影日時、シャッター速度、ゲイン、露出時間(シャッター速度xスタック数)、フィルター</div>
-              <div>※ 天体に関する情報は Wikipedia <a href="https://ja.wikipedia.org/wiki/%E3%83%A1%E3%82%B7%E3%82%A8%E5%A4%A9%E4%BD%93%E3%81%AE%E4%B8%80%E8%A6%A7">メシエ天体の一覧</a> より取得</div>
+              {props.data.catalog == 'messier' ? 
+                <div>※ 天体に関する情報は主に Wikipedia <a href="https://ja.wikipedia.org/wiki/%E3%83%A1%E3%82%B7%E3%82%A8%E5%A4%A9%E4%BD%93%E3%81%AE%E4%B8%80%E8%A6%A7">メシエ天体の一覧</a> より取得</div>
+               :<div>※ 天体に関する情報は主に Wikipedia <a href="https://ja.wikipedia.org/wiki/%E3%83%8B%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%A9%E3%83%AB%E3%82%AB%E3%82%BF%E3%83%AD%E3%82%B0%E5%A4%A9%E4%BD%93%E3%81%AE%E4%B8%80%E8%A6%A7">ニュージェネラルカタログ天体の一覧</a> より取得</div>}
               <div>※ 画像へのアノテーションは <a href="https://github.com/nordcomputer/astro-annotator">Astro Annotator</a> を使用</div>
               <div>※ 一部 Astro Annotator ではアノテーションできなかった画像については Siril でアノテーションしたものを使用</div>
             </footer>
