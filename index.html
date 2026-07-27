@@ -27,7 +27,6 @@
     <script type="module" src="https://esm.sh/tsx"></script>
   </head>
   <body>
-    <h1 id="top">DWARF mini で天体撮影</h1>
     <div id="root"></div>
     <script type="text/babel">
       import { useState, useEffect, useRef } from "react";
@@ -162,11 +161,18 @@
           };
         }, [props.data.catalog]);
 
+        if (props.data.catalog == 'messier') {
+          document.title = "DWARF mini でメシエ天体撮影";
+        }
+        else {
+          document.title = "DWARF mini で天体撮影";
+        }
         return (
           <>
             <header>
               {props.data.catalog == 'messier' ? 
                 <>
+                  <h1 id="top">DWARF mini でメシエ天体撮影</h1>
                   <div>DWARF mini で撮影したメシエ天体一覧</div>
                   <div>東京都内の明るい空（ボートル・スケール 9）でも</div>
                   <div>全 {props.data.count} 天体（{props.data.image_count} 画像）を撮影できました</div>
@@ -174,6 +180,7 @@
                 </>
                 :
                 <>
+                  <h1 id="top">DWARF mini で天体撮影</h1>
                   <div>DWARF mini で撮影したメシエ天体以外の一覧</div>
                   <div>東京都内の明るい空（ボートル・スケール 9）で挑戦中</div>
                   <div><Link to="/messier/">メシエ天体の撮影画像はこちら</Link></div>
