@@ -203,8 +203,9 @@
               {props.data.catalog == 'messier' ? 
                 <div>※ 天体に関する情報は主に Wikipedia <a href="https://ja.wikipedia.org/wiki/%E3%83%A1%E3%82%B7%E3%82%A8%E5%A4%A9%E4%BD%93%E3%81%AE%E4%B8%80%E8%A6%A7">メシエ天体の一覧</a> より取得</div>
                :<div>※ 天体に関する情報は主に Wikipedia <a href="https://ja.wikipedia.org/wiki/%E3%83%8B%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%A9%E3%83%AB%E3%82%AB%E3%82%BF%E3%83%AD%E3%82%B0%E5%A4%A9%E4%BD%93%E3%81%AE%E4%B8%80%E8%A6%A7">ニュージェネラルカタログ天体の一覧</a> より取得</div>}
-              <div>※ 画像へのアノテーションは <a href="https://github.com/nordcomputer/astro-annotator">Astro Annotator</a> を使用</div>
-              <div>※ 一部 Astro Annotator ではアノテーションできなかった画像については Siril でアノテーションしたものを使用</div>
+              <div>※ 画像へのアノテーションは <a href="https://github.com/dstndstn/astrometry.net">astrometry.net</a> の solve-field および plot-constellations を使用</div>
+              <div>&nbsp;（solve-field および plot-constellations の使い方については <a href="https://github.com/nordcomputer/astro-annotator">Astro Annotator</a> を参考にさせていただきました）</div>
+              <div>※ 一部 plot-constellations ではアノテーションできなかった画像については Siril でアノテーションしたものを使用</div>
             </footer>
           </>
         );
