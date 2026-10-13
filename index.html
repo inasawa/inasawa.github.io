@@ -274,7 +274,7 @@
             </div>
             <div style={{"display": "flex", "justify-content": "center"}} >
               <Link ref={prevRef} style={{"display": "flex", "align-items": "center"}} to={'/'+props.data.catalog+'/images/' + props.data.list[m.prev].M} ><img src="/common/btn-prev.png" alt="Prev" /></Link>
-              <img style={{"max-width": "90%", "height": "auto", "margin": "10px 5px"}} src={'/'+props.data.catalog+'/images/' + (annotation ? m.I.substring(0, m.I.length-6) + 'A.webp' : m.I)} title={m.M} alt={m.M} onClick={toggle_annotation} />
+              <img style={{"max-width": "90%", "height": "auto", "margin": "10px 5px"}} src={'/'+props.data.catalog+'/images/' + (annotation ? m.I.substring(0, m.I.length-5) + '-A.webp' : m.I)} title={m.M} alt={m.M} onClick={toggle_annotation} />
               <Link ref={nextRef} style={{"display": "flex", "align-items": "center"}} to={'/'+props.data.catalog+'/images/' + props.data.list[m.next].M} ><img src="/common/btn-next.png" alt="Next" /></Link>
             </div>
             <div style={{"text-align": "center"}} ><ImageCaption m={m} /></div>
@@ -287,7 +287,7 @@
         const m = props.m;
         return (
           <>
-            <div style={{"font-size":"90%"}}>{m.D} {m.T} {m.S}s G{m.G} {m.E} {m.F}</div>
+            <div style={{"font-size":"85%"}}>{m.D} {m.T} {m.EQ ? 'EQ ' : ''}{m.S}s G{m.G} {m.E} {m.F}</div>
             {m.C1.map(function(c) {
               return (<div>{c}</div>);
             })}
