@@ -50,8 +50,9 @@
           <BrowserRouter>
             <Routes>
               <Route index element={<Navigate to="/messier/" />} />
-              <Route path="/messier/*" element={<GetData data_path="/messier/messier.json" />} />
-              <Route path="/ngc/*"     element={<GetData data_path="/ngc/ngc.json" />} />
+              <Route path="/messier/*"  element={<GetData data_path="/messier/messier.json" />} />
+              <Route path="/caldwell/*" element={<GetData data_path="/caldwell/caldwell.json" />} />
+              <Route path="/ngc/*"      element={<GetData data_path="/ngc/ngc.json" />} />
             </Routes>
           </BrowserRouter>
         );
@@ -101,7 +102,7 @@
               return (<span className={"link-list-"+props.data.catalog} key={m.M}>{m.M}</span>);
             }
           });
-        const match = location.hash.match(/^#((M|NGC)(\d+))$/);
+        const match = location.hash.match(/^#((M|C|NGC)(\d+))$/);
         //console.log('TopPage location', location.pathname, location.hash, match);
         const thumbnails = 
           props.data.list.map(function(m) {
@@ -137,7 +138,7 @@
           const handleKeyDown = (event) => {
             //console.log('handleKeyDown document.baseURI', document.baseURI);
             //console.log('TopPage useEffect match 1', match);
-            const match = document.baseURI.match(/^.*\/#((M|NGC)(\d+))$/);
+            const match = document.baseURI.match(/^.*\/#((M|C|NGC)(\d+))$/);
             //console.log('Key pressed:', '<' + event.key + '>', match ? match[3] : 'not match');
             const m = match ? (props.data.catalog == 'ngc' ? props.data.list.find((m) => m.M == match[1]) : props.data.list[match[3]-1]) : props.data.list[0]
             switch (event.key) {
@@ -172,12 +173,12 @@
           };
         }, [props.data.catalog]);
 
-        if (props.data.catalog == 'messier') {
-          document.title = "DWARF mini でメシエ天体撮影";
-        }
-        else {
-          document.title = "DWARF mini で天体撮影";
-        }
+        document.title =
+          props.data.catalog == 'messier' ?
+            "DWARF mini でメシエ天体撮影"
+          : props.data.catalog == 'caldwell' ?
+            "DWARF mini でカルドウェル天体撮影（工事中）"
+          : "DWARF mini で天体撮影";
         return (
           <>
             <header>
@@ -187,14 +188,24 @@
                   <div>DWARF mini で撮影したメシエ天体一覧</div>
                   <div>東京都内の明るい空（ボートル・スケール 9）でも</div>
                   <div>全 {props.data.count} 天体（{props.data.image_count} 画像）を撮影できました</div>
-                  <div><Link to="/ngc/">メシエ天体以外の撮影画像はこちら</Link></div>
+                  <div><Link to="/caldwell/">カルドウェル天体の撮影画像はこちら</Link></div>
+                  <div><Link to="/ngc/">その他天体の撮影画像はこちら</Link></div>
                 </>
-                :
+              : props.data.catalog == 'caldwell' ?
+                <>
+                  <h1 id="top">DWARF mini でカルドウェル天体撮影</h1>
+                  <div>DWARF mini で撮影したその他天体の一覧</div>
+                  <div>東京都内の明るい空（ボートル・スケール 9）で挑戦中</div>
+                  <div><Link to="/messier/">メシエ天体の撮影画像はこちら</Link></div>
+                  <div><Link to="/ngc/">その他天体の撮影画像はこちら</Link></div>
+                </>
+              :
                 <>
                   <h1 id="top">DWARF mini で天体撮影</h1>
                   <div>DWARF mini で撮影したメシエ天体以外の一覧</div>
                   <div>東京都内の明るい空（ボートル・スケール 9）で挑戦中</div>
                   <div><Link to="/messier/">メシエ天体の撮影画像はこちら</Link></div>
+                  <div><Link to="/caldwell/">カルドウェル天体の撮影画像はこちら</Link></div>
                 </>}
             </header>
             <div className="link-list">
@@ -212,8 +223,10 @@
               <div>※ 元画像は DWARF mini の天文スタジオで自動補正を適用したもの</div>
               <div>※ １行目の表示は、撮影日時、シャッター速度、ゲイン、露出時間(シャッター速度xスタック数)、フィルター</div>
               {props.data.catalog == 'messier' ? 
-                <div>※ 天体に関する情報は主に Wikipedia <a href="https://ja.wikipedia.org/wiki/%E3%83%A1%E3%82%B7%E3%82%A8%E5%A4%A9%E4%BD%93%E3%81%AE%E4%B8%80%E8%A6%A7">メシエ天体の一覧</a> より取得</div>
-               :<div>※ 天体に関する情報は主に Wikipedia <a href="https://ja.wikipedia.org/wiki/%E3%83%8B%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%A9%E3%83%AB%E3%82%AB%E3%82%BF%E3%83%AD%E3%82%B0%E5%A4%A9%E4%BD%93%E3%81%AE%E4%B8%80%E8%A6%A7">ニュージェネラルカタログ天体の一覧</a> より取得</div>}
+                <div>※ 天体に関する情報は主に Wikipedia <a href="https://ja.wikipedia.org/wiki/%E3%83%A1%E3%82%B7%E3%82%A8%E5%A4%A9%E4%BD%93%E3%81%AE%E4%B8%80%E8%A6%A7">メシエ天体の一覧</a> を参照</div>
+              : props.data.catalog == 'caldwell' ?
+                <div>※ 天体に関する情報は主に Wikipedia <a href="https://ja.wikipedia.org/wiki/%E3%82%AB%E3%83%AB%E3%83%89%E3%82%A6%E3%82%A7%E3%83%AB%E3%82%AB%E3%82%BF%E3%83%AD%E3%82%B0%E3%81%AE%E4%B8%80%E8%A6%A7">カルドウェルカタログの一覧</a> を参照</div>
+              : <div>※ 天体に関する情報は主に Wikipedia <a href="https://ja.wikipedia.org/wiki/%E3%83%8B%E3%83%A5%E3%83%BC%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%A9%E3%83%AB%E3%82%AB%E3%82%BF%E3%83%AD%E3%82%B0%E5%A4%A9%E4%BD%93%E3%81%AE%E4%B8%80%E8%A6%A7">ニュージェネラルカタログ天体の一覧</a> を参照</div>}
               <div>※ 画像へのアノテーションは <a href="https://github.com/dstndstn/astrometry.net">astrometry.net</a> の solve-field および plot-constellations を使用</div>
               <div>&nbsp;（solve-field および plot-constellations の使い方については <a href="https://github.com/nordcomputer/astro-annotator">Astro Annotator</a> を参考にさせていただきました）</div>
               <div>※ 一部 plot-constellations ではアノテーションできなかった画像については Siril でアノテーションしたものを使用</div>
@@ -231,7 +244,7 @@
         const prevRef = useRef();
         const nextRef = useRef();
         const annoRef = useRef();
-        const match = id.match(/^(M|NGC)(\d+)$/);
+        const match = id.match(/^(M|C|NGC)(\d+)$/);
         //console.log('Image match', match);
         if (!match) {
           return;
