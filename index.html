@@ -102,7 +102,7 @@
               return (<span className={"link-list-"+props.data.catalog} key={m.M}>{m.M}</span>);
             }
           });
-        const match = location.hash.match(/^#((M|C|NGC)(\d+))$/);
+        const match = location.hash.match(/^#((M|C|IC|NGC)(\d+))$/);
         //console.log('TopPage location', location.pathname, location.hash, match);
         const thumbnails = 
           props.data.list.map(function(m) {
@@ -138,7 +138,7 @@
           const handleKeyDown = (event) => {
             //console.log('handleKeyDown document.baseURI', document.baseURI);
             //console.log('TopPage useEffect match 1', match);
-            const match = document.baseURI.match(/^.*\/#((M|C|NGC)(\d+))$/);
+            const match = document.baseURI.match(/^.*\/#((M|C|IC|NGC)(\d+))$/);
             //console.log('Key pressed:', '<' + event.key + '>', match ? match[3] : 'not match');
             const m = match ? (props.data.catalog == 'ngc' ? props.data.list.find((m) => m.M == match[1]) : props.data.list[match[3]-1]) : props.data.list[0]
             switch (event.key) {
@@ -251,7 +251,7 @@
         const prevRef = useRef();
         const nextRef = useRef();
         const annoRef = useRef();
-        const match = id.match(/^(M|C|NGC)(\d+)$/);
+        const match = id.match(/^(M|C|IC|NGC)(\d+)$/);
         //console.log('Image match', match);
         if (!match) {
           return;
